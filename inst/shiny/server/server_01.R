@@ -18,6 +18,7 @@ observe({
         se <<- ingest_data(input$counts$datapath, input$md$datapath)
     }
     else if (!is.null(input$se)){
+        ### THIS NEEDS TO BE TESTED
         se <<- SummarizedExperiment(input$se$datapath)
     }
     else {
@@ -25,7 +26,8 @@ observe({
     }
     # Populate drop down menu with covariates
     req(se)
-    covs <- metadata(se)$covariates
+    cols <- names(colData(se))
+    covs <- cols[cols != 'Batch']
     updateSelectInput(inputId = "covariate", choices = covs)
 })
 
@@ -37,14 +39,12 @@ observeEvent(input$covariate, {
     })
 })
 
-# Compute counfounding design
-output$text <- renderText("this is a test")
+    output$text <- renderText("this is a test")
 
-#TODO: Let's make this table a matrix of both metrics for all covariates
-observeEvent(input$covariate, {
-    req(se)
-    output$confoundingTable <- renderTable({
-        spcc <<- std_pearson_corr_coef(bd)
-        cv <<- cramers_v(bd)
+    observeEvent(input$covariate, {
+        req(se)
+        output$confoundingTable <- renderTable({
+            spcc <<- std_pearson_corr_coef(se, input$covariate)
+            cv <<- cramers_v(se, input$covariate)
+        })
     })
-})
