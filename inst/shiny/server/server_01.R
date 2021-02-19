@@ -44,3 +44,25 @@ observeEvent(input$covariate, {
         metadata(se)$confound.metrics
     }, rownames = T)
 })
+
+
+# Create PCA Plot
+observeEvent(input$correctionMethod, {
+    req(se)
+
+    # If no correction methods have been used yet, use the default value in the
+    # selectInput to create a PCA plot with just "counts". Otherwise, use
+    # updateSelectInput elsewhere (after correction method like ComBat) to add
+    # to the list of options, and then use that to create the PCA
+    value <- reactive({
+        if (identical(input$correctionMethod, "None")) {
+            input$correctionMethod <- "counts"
+        }
+        else
+            input$correctionMethod
+        })
+
+    output$pcaPlot <- renderPlot({
+        plot_pca(se)
+    })
+})
