@@ -33,7 +33,7 @@ cramers_v <- function(bd) {
   return(v)
 }
 
-confound_metrics <- function(se){
+confoundMetrics <- function(se){
   covs = metadata(se)$covariates
   metrics <- list("Pearson Correlation Coefficient"=std_pearson_corr_coef, "Cramer's V"=cramers_v)
   metric.mat <- matrix(nrow=length(covs), ncol=length(metrics), dimnames = list(covs, names(metrics)))
@@ -48,4 +48,14 @@ confound_metrics <- function(se){
   }
   # Add metrics to se
   return(metric.mat)
+}
+
+batchDesign <- function(se, covariate){
+  #' Create a batch design table for the provided covariate
+  design <- colData(se) %>% as_tibble %>% group_by(eval(as.symbol(covariate))) %>% count(Batch) %>% pivot_wider(names_from = Batch, values_from = n)
+  names(design)[names(design) == "eval(as.symbol(covariate))"] <- ""
+  for (i in 2:length(design)) {
+    colnames(design)[i] <- paste("Batch",i-1)
+  }
+  return(design)
 }

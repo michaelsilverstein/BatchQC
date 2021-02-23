@@ -9,6 +9,7 @@ require(EBSeq)
 require(data.table)
 
 source(file.path("utils", "helpers.R"),  local = TRUE)
+source('../../R/summary_statistics.R', local=T)
 
 ui <- navbarPage(
 

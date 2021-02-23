@@ -77,13 +77,26 @@ observe({
   }
 })
 
+### Create batch design table when covariate selected
+observeEvent(input$covariate, {
+  req(reactivevalue$se)
+  output$batch_design <- renderTable(batch_design(reactivevalue$se, input$covariate))
+})
 
+# Compute counfounding design
+observeEvent(input$covariate, {
+  req(reactivevalue$se)
+  output$confounding_table <- renderTable({
+    metadata(reactivevalue$se)$confound.metrics
+  }, rownames = T)
+})
 
 #### Create the summarizeexperiment object ####
 observe({
   # Look for user file upload
   if (!is.null(reactivevalue$counts_location) & !is.null(reactivevalue$metadata_location)
       & !is.null(reactivevalue$batch_Variable_Name) & !is.null(reactivevalue$group_variable_Name) & is.null(reactivevalue$se)){
+    #TODO: THIS NEEDS TO BE PLACED IN IT'S OWN FUNCTION FOR READING IN DATA FROM FILEPATHS
     coldata=read.csv(reactivevalue$metadata_location,header = T,row.names = 1,check.names = F)
     counts=read.csv(reactivevalue$counts_location,header = T,row.names = 1,check.names = F)
 
@@ -93,6 +106,7 @@ observe({
     counts=counts[,reserve_sample]
     counts = counts[,match(rownames(coldata),colnames(counts))]
 
+    #TODO: SE SHOULD BE CREATED ONCE. FUNCTIONALITY SHOULD BE COMBINED
     se = SummarizedExperiment(assay=list(counts=counts
     ), colData=coldata)
     se = ingest_data(se,reactivevalue$group_variable_Name,
@@ -133,17 +147,6 @@ observe({
   #reactivevalue$se=se
 
 })
-
-
-
-#### Create batch design table when covariate selected ####
-observeEvent( input$covariate, {
-  req(se)
-  output$summaryTable <- renderTable({
-    bd <<- batch_design(se, input$covariate)
-  })
-})
-
 
 
 #### Plot Heatmap based on the input ####
