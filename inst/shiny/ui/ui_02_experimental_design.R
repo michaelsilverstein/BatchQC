@@ -18,18 +18,6 @@ tabPanel("Experimental Design",
                tabPanel("Confounding",
                         textOutput("text"),
                         tableOutput("confoundingTable")
-               ),
-               tabPanel("ComBat"
-                        #selectInput("covariate", "Select Covariate:", choices = ""),
-               ),
-               tabPanel("ComBat-seq"
-                        #selectInput("covariate", "Select Covariate:", choices = ""),
-               ),
-               tabPanel("SVA"
-                        # selectInput("covariate", "Select Covariate:", choices = ""),
-               ),
-               tabPanel("RUV"
-                        #selectInput("covariate", "Select Covariate:", choices = ""),
                )
              )
            )

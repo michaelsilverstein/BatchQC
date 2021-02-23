@@ -137,11 +137,17 @@ observe({
 
 
 #### Create batch design table when covariate selected ####
-observeEvent( input$covariate, {
-  req(se)
-  output$summaryTable <- renderTable({
-    bd <<- batch_design(se, input$covariate)
-  })
+observeEvent(input$covariate, {
+  req(reactivevalue$se)
+  output$batch_design <- renderTable(batch_design(reactivevalue$se, input$covariate))
+})
+
+# Compute counfounding design
+observeEvent(input$covariate, {
+  req(reactivevalue$se)
+  output$counfounding_table <- renderTable({
+    metadata(req(reactivevalue$se))$confound.metrics
+  }, rownames = T)
 })
 
 

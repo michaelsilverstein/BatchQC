@@ -21,6 +21,7 @@ ui <- navbarPage(
   # theme = "bootstrap.min.css",
   source(file.path("ui", "ui_01_upload.R"),  local = TRUE)$value,
   source(file.path("ui", "ui_02_experimental_design.R"),  local = TRUE)$value,
+  source(file.path("ui", "ui_batch_correction.R"), local=TRUE)$value,
   source(file.path("ui", "ui_03_variation.R"),  local = TRUE)$value,
   source(file.path("ui", "ui_04_median_correlations.R"),  local = TRUE)$value,
   source(file.path("ui", "ui_05_heatmaps.R"),  local = TRUE)$value,
