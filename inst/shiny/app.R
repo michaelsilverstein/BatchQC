@@ -11,7 +11,7 @@ require(data.table)
 library(dplyr)
 library(tidyr)
 
-# Merge only
+# Pull request
 source(file.path("utils", "helpers.R"),  local = TRUE)
 
 ui <- navbarPage(
