@@ -67,8 +67,14 @@ tabPanel("Upload Data",
 
                          ),
                 tabPanel('Normalization',
-                         actionButton(inputId = 'DESEQ_normalization',label = 'DESEQ normalization'),
-                         actionButton(inputId = 'CPM_Normalization',label = 'CPM normalization')
+                         #actionButton(inputId = 'DESEQ_normalization',label = 'DESEQ normalization'),
+                         #actionButton(inputId = 'CPM_Normalization',label = 'CPM normalization')
+                        textInput('Normalization_Assay_Name',label = 'Assay Name',placeholder = 'Enter Assay Name here'),
+                        selectInput('Normalization_Method',label = 'Select Normalization Method',multiple = F,choices = c(
+                                                                                                                          'CountsPerMillion',
+                                                                                                                          'MedianofRatio'
+                                                                                                                          )),
+                        actionButton('Normalize','Normalize')
 
                 ),
                 tabPanel('Full Metadata',

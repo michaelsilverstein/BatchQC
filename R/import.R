@@ -62,5 +62,20 @@ ingest_data <- function(se,group,batch){
 }
 
 
+Normalization <- function(summarized_experiment_object, name_of_new_assay, method) {
+  summarized_experiment_object=summarized_experiment_object
+  if (method=='MedianofRatio') {
+  summarized_experiment_object@assays@data[[name_of_new_assay]]=GetNormalizedMat(summarized_experiment_object@assays@data$counts, MedianNorm(summarized_experiment_object@assays@data$counts))
+}
+  if (method=='CountsPerMillion') {
+    summarized_experiment_object@assays@data[[name_of_new_assay]]=((summarized_experiment_object@assays@data$counts+1)/colSums(summarized_experiment_object@assays@data$counts))*(10^6)
+}
 
+return(summarized_experiment_object)
+
+
+
+
+
+}
 

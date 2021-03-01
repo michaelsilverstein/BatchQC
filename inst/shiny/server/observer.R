@@ -104,20 +104,33 @@ observeEvent(input$submit_variables, {
 
 
 #### Normalize data ####
-observeEvent(input$DESEQ_normalization, {
-  if (is.null(input$DESEQ_normalization)) return()
-  if (!is.null(reactivevalue$se)){require(EBSeq)
-    reactivevalue$se@assays@data$DESEQ_normalization=GetNormalizedMat(reactivevalue$se@assays@data$counts, MedianNorm(reactivevalue$se@assays@data$counts))
-    updateSelectizeInput(session = session,inputId = 'Normalization_method_heatmap',choices = assayNames((reactivevalue$se)),selected = NULL)
-    updateSelectizeInput(session = session,inputId = 'Normalization_method_PCA',choices = assayNames((reactivevalue$se)),selected = NULL)}
+#observeEvent(input$DESEQ_normalization, {
+#  if (is.null(input$DESEQ_normalization)) return()
+#  if (!is.null(reactivevalue$se)){require(EBSeq)
+
+#    updateSelectizeInput(session = session,inputId = 'Normalization_method_heatmap',choices = assayNames((reactivevalue$se)),selected = NULL)
+#    updateSelectizeInput(session = session,inputId = 'Normalization_method_PCA',choices = assayNames((reactivevalue$se)),selected = NULL)}
+#})
+
+#observeEvent(input$CPM_Normalization, {
+#  if (is.null(input$CPM_Normalization)) return()
+#  if (!is.null(reactivevalue$se)){  reactivevalue$se@assays@data$CPM=((reactivevalue$se@assays@data$counts+1)/colSums(reactivevalue$se@assays@data$counts))*(10^6)
+#  updateSelectizeInput(session = session,inputId = 'Normalization_method_heatmap',choices = assayNames((reactivevalue$se)),selected = NULL)
+#  updateSelectizeInput(session = session,inputId = 'Normalization_method_PCA',choices = assayNames((reactivevalue$se)),selected = NULL)}
+#})
+
+observeEvent(input$Normalize, {
+if (!is.null(input$Normalization_Assay_Name)&!is.null(input$Normalization_Method)&!is.null(reactivevalue$se)) {
+name=input$Normalization_Assay_Name
+method=input$Normalization_Method
+reactivevalue$se=Normalization(reactivevalue$se,name,method)
+updateSelectizeInput(session = session,inputId = 'Normalization_method_heatmap',choices = assayNames((reactivevalue$se)),selected = NULL)
+updateSelectizeInput(session = session,inputId = 'Normalization_method_PCA',choices = assayNames((reactivevalue$se)),selected = NULL)
+}
 })
 
-observeEvent(input$CPM_Normalization, {
-  if (is.null(input$CPM_Normalization)) return()
-  if (!is.null(reactivevalue$se)){  reactivevalue$se@assays@data$CPM=((reactivevalue$se@assays@data$counts+1)/colSums(reactivevalue$se@assays@data$counts))*(10^6)
-  updateSelectizeInput(session = session,inputId = 'Normalization_method_heatmap',choices = assayNames((reactivevalue$se)),selected = NULL)
-  updateSelectizeInput(session = session,inputId = 'Normalization_method_PCA',choices = assayNames((reactivevalue$se)),selected = NULL)}
-})
+
+
 
 #### Organize the variables, ready the variable names for latter analysis ####
 observe({
