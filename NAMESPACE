@@ -3,6 +3,7 @@
 export(BatchQC)
 export(PCA_plotter)
 export(batch_design)
+export(batchqc_explained_variation)
 export(confound_metrics)
 export(cor_props)
 export(cramers_v)

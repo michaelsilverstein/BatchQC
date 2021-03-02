@@ -40,10 +40,10 @@ observeEvent( input$submit, {
     updateSelectizeInput(session = session,inputId = 'Variates_shape',choices = colnames(colData(reactivevalue$se)),selected = NULL)
     updateSelectizeInput(session = session,inputId = 'Variates_color',choices = colnames(colData(reactivevalue$se)),selected = NULL)
     output$metadata=renderDataTable(data.table(data.frame(colData(reactivevalue$se)),keep.rownames = T))
-    updateSelectizeInput(session,'batch',choices=colnames(colData(reactivevalue$se)),selected = NULL
-    )
-    updateSelectizeInput(session,'group',choices=colnames(colData(reactivevalue$se)),selected = NULL
-    )
+
+    updateSelectizeInput(session,'batch',choices=colnames(colData(reactivevalue$se)),selected = NULL)
+    updateSelectizeInput(session,'group',choices=colnames(colData(reactivevalue$se)),selected = NULL)
+    updateSelectizeInput(session,'assay',choices=assayNames(reactivevalue$se),selected = NULL)
   }
   else if (!is.null(input$se$datapath)){
     se = readRDS(reactivevalue$se_location)
@@ -60,10 +60,9 @@ observeEvent( input$submit, {
     updateSelectizeInput(session = session,inputId = 'Variates_color',choices = colnames(colData(reactivevalue$se)),selected = NULL)
     output$metadata=renderDataTable(data.table(data.frame(colData(reactivevalue$se)),keep.rownames = T))
 
-    updateSelectizeInput(session,'batch',choices=colnames(colData(reactivevalue$se)),selected = NULL
-    )
-    updateSelectizeInput(session,'group',choices=colnames(colData(reactivevalue$se)),selected = NULL
-    )
+    updateSelectizeInput(session,'batch',choices=colnames(colData(reactivevalue$se)),selected = NULL)
+    updateSelectizeInput(session,'group',choices=colnames(colData(reactivevalue$se)),selected = NULL)
+    updateSelectizeInput(session,'assay',choices=assayNames(reactivevalue$se),selected = NULL)
   }
 })
 
@@ -138,6 +137,23 @@ observe({
   }
 })
 
+
+### Create variation table and plot ###
+observe({
+  if (!is.null(reactivevalue$se)&!is.null(input$group)&!is.null(input$batch)) {
+    batchqc_ev <- batchqc_explained_variation(reactivevalue$se,
+                                              input$assay,
+                                              input$group,
+                                              input$batch)
+    # apply(batchqc_ev$explained_variation,2,summary)
+    # output$variation_table <- renderPlot({
+    #   boxplot(batchqc_ev$explained_variation, ylab =
+    #                                     "Percent Explained Variation", main =
+    #                                     "Percent of Variation Explained by Source")
+    # })
+  }
+
+})
 
 
 

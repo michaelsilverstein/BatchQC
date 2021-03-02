@@ -74,16 +74,16 @@ tabPanel("Upload Data",
                 tabPanel('Full Metadata',
                          dataTableOutput('metadata')),
                 tabPanel('Setting Variables',
-                         selectizeInput('group','Biological setting Column',choices =c(),multiple = F,selected = NULL,
-                                        options = list(
-                                            placeholder = 'Please select an option below',
-                                            onInitialize = I('function() { this.setValue(""); }')
-                                        )),
-                         selectizeInput('batch','Batch Variable Column',choices =c(),multiple = F,selected = NULL,
-                                        options = list(
-                                            placeholder = 'Please select an option below',
-                                            onInitialize = I('function() { this.setValue(""); }')
-                                        )),
+                         # selectizeInput('group','Biological setting Column',choices =c(),multiple = F,selected = NULL,
+                         #                options = list(
+                         #                    placeholder = 'Please select an option below',
+                         #                    onInitialize = I('function() { this.setValue(""); }')
+                         #                )),
+                         # selectizeInput('batch','Batch Variable Column',choices =c(),multiple = F,selected = NULL,
+                         #                options = list(
+                         #                    placeholder = 'Please select an option below',
+                         #                    onInitialize = I('function() { this.setValue(""); }')
+                         #                )),
                          actionButton(inputId = 'submit_variables',label = 'Submit'),
                          dataTableOutput('variable_overview')
 

@@ -15,8 +15,7 @@ summarize_experiment = function(Counts_path,metadata_path) {
   counts <- counts[,mutual_sample]
   coldata <- coldata[mutual_sample,]
 
-  se <- SummarizedExperiment(assay=list(counts=counts
-  ), colData=coldata)
+  se <- SummarizedExperiment(assay=list(counts=counts), colData=coldata)
 }
 
 
@@ -43,7 +42,7 @@ ingest_data <- function(se,group,batch){
     # Add experimental group variable
     metadata(se)$Experimental_group <- group
 
-    # Get counfounding metrics
+    # Get confounding metrics
     metadata(se)$confound.metrics <- confound_metrics(se)
     # Calculate CPM normalization for the summarizeexperiment
     #se@assays@data$CPM=((se@assays@data$counts+1)/colSums(se@assays@data$counts))*(10^6)
@@ -53,9 +52,8 @@ ingest_data <- function(se,group,batch){
     # EdgeR won't go straight-forward on how exactly they do their normalization, so I will just pass here.
     colData(se)$library_size <- colSums(se@assays@data$counts)
 
-  }
-  else {
-	se <- NULL
+  }else {
+	  se <- NULL
   }
   return(se)
 }
