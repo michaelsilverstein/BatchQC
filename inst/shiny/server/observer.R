@@ -129,8 +129,19 @@ updateSelectizeInput(session = session,inputId = 'Normalization_method_PCA',choi
 }
 })
 
-
-
+#### Batch Correction ####
+observeEvent(input$Correct, {
+  if (!is.null(input$batch_Variable_Name)&!is.null(input$group_variable_Name)&!is.null(reactivevalue$se)&!is.null(input$BatchCorrectedAssayName)&!is.null(input$BatchCorrectMethod)) {
+    Batch=input$batch_Variable_Name
+    Group=input$group_variable_Name
+    covariate=colnames(reactivevalue$metadata)[!colnames(reactivevalue$metadata)%in%
+                                                 c(Batch,Group)]
+    reactivevalue$se=batch_correct(reactivevalue$se,Batch,Group,covariate,
+                                   input$BatchCorrectedAssayName,input$BatchCorrectMethod)
+    updateSelectizeInput(session = session,inputId = 'Normalization_method_heatmap',choices = assayNames((reactivevalue$se)),selected = NULL)
+    updateSelectizeInput(session = session,inputId = 'Normalization_method_PCA',choices = assayNames((reactivevalue$se)),selected = NULL)
+  }
+})
 
 #### Organize the variables, ready the variable names for latter analysis ####
 observe({

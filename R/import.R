@@ -72,10 +72,24 @@ Normalization <- function(summarized_experiment_object, name_of_new_assay, metho
 }
 
 return(summarized_experiment_object)
+}
+#    reactivevalue$se=batch_correct(reactivevalue$se,Batch,Group,covariate,input$BatchCorrectedAssayName,input$BatchCorrectMethod)
+Batch_Correct = function(summarized_experiment_object,Batch,Group,covariate, name_of_new_assay, method) {
+  summarized_experiment_object=summarized_experiment_object
 
-
-
-
+if (method=='ComBat-Seq') {
+  summarized_experiment_object@assays@data[[name_of_new_assay]]=ComBat_seq(summarized_experiment_object@assays@data$counts,
+                                                                          batch = Batch,group = Group,covar_mod = covariate)
+}
+  if (method=='ComBat') {
+    summarized_experiment_object@assays@data[[name_of_new_assay]]=ComBat_seq(summarized_experiment_object@assays@data$counts,
+                                                                             batch = Batch,mod = Group)
+  }
+  return(summarized_experiment_object)
 
 }
+
+
+
+
 

@@ -43,17 +43,7 @@ tabPanel("Upload Data",
                 multiple = FALSE,
                 accept = accepted
             ),
-            #selectizeInput('group','Biological setting Column',choices =c(),multiple = F,selected = NULL,
-            #               options = list(
-            #                   placeholder = 'Please select an option below',
-            #                   onInitialize = I('function() { this.setValue(""); }')
-            #               )),
-            #selectizeInput('batch','Batch Variable Column',choices =c(),multiple = F,selected = NULL,
-            #               options = list(
-            #                   placeholder = 'Please select an option below',
-            #                   onInitialize = I('function() { this.setValue(""); }')
-            #               )),
-            actionButton(inputId = 'submit',label = 'Submit')
+            actionButton(inputId = 'submit',label = 'Upload')
 
         ),
 
@@ -70,16 +60,14 @@ tabPanel("Upload Data",
                          #actionButton(inputId = 'DESEQ_normalization',label = 'DESEQ normalization'),
                          #actionButton(inputId = 'CPM_Normalization',label = 'CPM normalization')
                         textInput('Normalization_Assay_Name',label = 'Assay Name',placeholder = 'Enter Assay Name here'),
-                        selectInput('Normalization_Method',label = 'Select Normalization Method',multiple = F,choices = c(
-                                                                                                                          'CountsPerMillion',
-                                                                                                                          'MedianofRatio'
-                                                                                                                          )),
+                        selectInput('Normalization_Method',label = 'Select Normalization Method',
+                                    multiple = F,choices = c('CountsPerMillion','MedianofRatio')),
                         actionButton('Normalize','Normalize')
 
                 ),
                 tabPanel('Full Metadata',
                          dataTableOutput('metadata')),
-                tabPanel('Setting Variables',
+                tabPanel('Batch Effect Correction',
                          selectizeInput('group','Biological setting Column',choices =c(),multiple = F,selected = NULL,
                                         options = list(
                                             placeholder = 'Please select an option below',
@@ -90,9 +78,12 @@ tabPanel("Upload Data",
                                             placeholder = 'Please select an option below',
                                             onInitialize = I('function() { this.setValue(""); }')
                                         )),
-                         actionButton(inputId = 'submit_variables',label = 'Submit'),
-                         dataTableOutput('variable_overview')
-
+                         textInput('BatchCorrectedAssayName','Assay Name for Batch Corrected Counts',
+                                   placeholder = 'Enter the name here'),
+                         selectInput('BatchCorrectMethod',label = 'Select Batch correct Method',multiple = F,choices = c(
+                             'ComBat-Seq',
+                             'ComBat')),
+                         actionButton(inputId = 'submit_variables',label = 'Submit')
                          )
             )
         )
