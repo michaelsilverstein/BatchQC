@@ -10,6 +10,7 @@ require(data.table)
 #require(reader)
 library(dplyr)
 library(tidyr)
+library(sva)
 
 source(file.path("utils", "helpers.R"),  local = TRUE)
 

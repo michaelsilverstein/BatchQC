@@ -62,13 +62,13 @@ ingest_data <- function(se,group,batch){
 }
 
 
-Normalization <- function(summarized_experiment_object, name_of_new_assay, method) {
+Normalization <- function(summarized_experiment_object, name_of_new_assay, method,nameofassay) {
   summarized_experiment_object=summarized_experiment_object
   if (method=='MedianofRatio') {
-  summarized_experiment_object@assays@data[[name_of_new_assay]]=GetNormalizedMat(summarized_experiment_object@assays@data$counts, MedianNorm(summarized_experiment_object@assays@data$counts))
+  summarized_experiment_object@assays@data[[name_of_new_assay]]=GetNormalizedMat(summarized_experiment_object@assays@data[[nameofassay]], MedianNorm(summarized_experiment_object@assays@data[[nameofassay]]))
 }
   if (method=='CountsPerMillion') {
-    summarized_experiment_object@assays@data[[name_of_new_assay]]=((summarized_experiment_object@assays@data$counts+1)/colSums(summarized_experiment_object@assays@data$counts))*(10^6)
+    summarized_experiment_object@assays@data[[name_of_new_assay]]=((summarized_experiment_object@assays@data[[nameofassay]]+1)/colSums(summarized_experiment_object@assays@data[[nameofassay]]))*(10^6)
 }
 
 return(summarized_experiment_object)
@@ -79,10 +79,10 @@ Batch_Correct = function(summarized_experiment_object,Batch,Group,covariate, nam
 
 if (method=='ComBat-Seq') {
   summarized_experiment_object@assays@data[[name_of_new_assay]]=ComBat_seq(summarized_experiment_object@assays@data$counts,
-                                                                          batch = Batch,group = Group,covar_mod = covariate)
+                                                                          batch = Batch,group = Group)
 }
   if (method=='ComBat') {
-    summarized_experiment_object@assays@data[[name_of_new_assay]]=ComBat_seq(summarized_experiment_object@assays@data$counts,
+    summarized_experiment_object@assays@data[[name_of_new_assay]]=ComBat(summarized_experiment_object@assays@data$counts,
                                                                              batch = Batch,mod = Group)
   }
   return(summarized_experiment_object)
